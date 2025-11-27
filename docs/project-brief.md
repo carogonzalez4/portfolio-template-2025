@@ -13,11 +13,13 @@
 
 <!-- Describe your project in 2-3 sentences -->
 
-I'm building a portfolio template for designers and creatives that want to showcase their projects and share their skills to other
+I'm building a portfolio template for designers and creatives that want to showcase their projects and share their skills with fellow desingers and possible employers.
 
 ### Who is it for?
 
 <!-- Define your target audience -->
+
+It is directed to designers or creatives that want to share their work and portray it in a way that
 
 ### Why does it matter?
 
