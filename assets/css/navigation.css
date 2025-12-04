@@ -7,7 +7,7 @@
   left: 0;
   right: 0;
   z-index: 100;
-  background: rgba(83, 158, 158, 0.9);
+  background: var(--color-accent);
   backdrop-filter: blur(10px);
   padding: var(--space-md) 0;
 }
@@ -40,5 +40,14 @@
 
 .nav-links a:hover,
 .nav-links a:focus {
-  color: var(--color-accent);
+  color: var(--color-accent-hover);
+}
+
+.nav-links a:active,
+.nav-links a.active {
+  color: #0000; /* Color para el enlace activo */
+}
+
+.nav-links a:visited {
+  color: var(--color-text-muted); /* Color para enlaces visitados */
 }
