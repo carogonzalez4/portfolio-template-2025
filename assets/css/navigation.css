@@ -7,7 +7,7 @@
   left: 0;
   right: 0;
   z-index: 100;
-  background: rgba(15, 15, 15, 0.9);
+  background: rgba(83, 158, 158, 0.9);
   backdrop-filter: blur(10px);
   padding: var(--space-md) 0;
 }
@@ -27,8 +27,10 @@
 
 .nav-links {
   display: flex;
-  gap: var(--space-lg);
+  justify-content: space-between; /* Ensures equal spacing between items */
+  flex: 1; /* Makes the nav-links container take up the remaining space */
   list-style: none;
+  font-weight: 700;
 }
 
 .nav-links a {

@@ -118,7 +118,7 @@
 .hero-bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  background: var(--color-background);
   z-index: -1;
 }
 
@@ -211,6 +211,7 @@
   font-weight: 800;
   margin-bottom: var(--space-sm);
   letter-spacing: -0.02em;
+  color: var(--color-text-title);
 }
 
 .hero-subtitle {
@@ -281,7 +282,7 @@
    7. About Section
    -------------------------------------------------------------------------- */
 .about {
-  background: var(--color-bg-alt);
+  background: var(--color-background);
 }
 
 .about-grid {
