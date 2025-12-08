@@ -34,30 +34,22 @@
 }
 
 .nav-links a {
-  color: var(--color-accent);
+  color: var(--color-button-card);
   transition: color 0.3s;
 }
 
 .nav-links a:hover,
 .nav-links a:focus {
-  color: var(--color-text-muted);
+  color: var(--color-accent); /* Color on hover/focus */
 }
 
 .nav-links a:active,
 .nav-links a.active {
-  color: #c10a0a00; /* Color para el enlace activo */
+  color: var(--color-button-text); /* Color para el enlace activo */
 }
 
 .nav-links a:visited {
-  color: var(--color-accent); /* Color para enlaces visitados */
-}
-
-/* Visible color when the link is the current/active section */
-.nav-links a:active,
-.nav-links a.active,
-.nav-links a[aria-current="page"],
-.nav-links a:target {
-  color: var(--color-text);
+  color: var(--color-button-text); /* Color para enlaces visitados */
 }
 
 /* Toggle button (hidden on desktop) */
