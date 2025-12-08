@@ -34,7 +34,7 @@
 }
 
 .nav-links a {
-  color: var(--color-text-muted);
+  color: #fff9f0;
   transition: color 0.3s;
 }
 
@@ -45,9 +45,9 @@
 
 .nav-links a:active,
 .nav-links a.active {
-  color: #0000; /* Color para el enlace activo */
+  color: #c10a0a00; /* Color para el enlace activo */
 }
 
 .nav-links a:visited {
-  color: var(--color-text-muted); /* Color para enlaces visitados */
+  color: #fff9f0; /* Color para enlaces visitados */
 }

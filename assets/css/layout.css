@@ -211,12 +211,12 @@
   font-weight: 800;
   margin-bottom: var(--space-sm);
   letter-spacing: -0.02em;
-  color: var(--color-text-title);
+  color: var(--color-accent);
 }
 
 .hero-subtitle {
   font-size: var(--text-xl);
-  color: var(--color-text-muted);
+  color: var(--color-accent);
   margin-bottom: var(--space-lg);
 }
 
@@ -270,6 +270,11 @@
   font-weight: 600;
   border-radius: 8px;
   transition: background 0.3s, transform 0.3s;
+  background: rgba(27, 79, 131, 0.75);
+  box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(13.4px);
+  -webkit-backdrop-filter: blur(13.4px);
+  border-radius: 10px;
 }
 
 .btn:hover,
@@ -283,6 +288,10 @@
    -------------------------------------------------------------------------- */
 .about {
   background: var(--color-background);
+}
+
+.section-title {
+  color: var(--color-accent); /* Use a CSS variable for consistency */
 }
 
 .about-grid {
@@ -299,7 +308,7 @@
 
 .about-text p {
   margin-bottom: var(--space-md);
-  color: var(--color-text-muted);
+  color: var(--color-accent);
 }
 
 .skills-grid {
@@ -427,7 +436,7 @@
    9. Contact Section
    -------------------------------------------------------------------------- */
 .contact {
-  background: var(--color-bg-alt);
+  background: var(--color-background);
   text-align: center;
 }
 
