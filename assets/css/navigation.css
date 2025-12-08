@@ -7,7 +7,7 @@
   left: 0;
   right: 0;
   z-index: 100;
-  background: var(--color-accent);
+  background: var(--color-background);
   backdrop-filter: blur(10px);
   padding: var(--space-md) 0;
 }
@@ -34,13 +34,13 @@
 }
 
 .nav-links a {
-  color: #fff9f0;
+  color: var(--color-accent);
   transition: color 0.3s;
 }
 
 .nav-links a:hover,
 .nav-links a:focus {
-  color: var(--color-accent-hover);
+  color: var(--color-text-muted);
 }
 
 .nav-links a:active,
@@ -49,5 +49,13 @@
 }
 
 .nav-links a:visited {
-  color: #fff9f0; /* Color para enlaces visitados */
+  color: var(--color-accent); /* Color para enlaces visitados */
+}
+
+/* Visible color when the link is the current/active section */
+.nav-links a:active,
+.nav-links a.active,
+.nav-links a[aria-current="page"],
+.nav-links a:target {
+  color: var(--color-text);
 }

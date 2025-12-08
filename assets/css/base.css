@@ -39,7 +39,7 @@ body {
   font-size: var(--text-base); /* Uses our fluid typography variable */
   line-height: 1.6;
   color: var(--color-text);
-  background-color: var(--color-bg);
+  background-color: var(--color-background);
 }
 
 /*
@@ -62,7 +62,7 @@ img {
   * We'll add specific link styles where needed.
   */
 a {
-  color: inherit;
+  color: var(--color-button-text);
   text-decoration: none;
 }
 
