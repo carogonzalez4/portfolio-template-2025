@@ -374,3 +374,24 @@ window.cleanupScrollObservers = () => {
   staggerObserver.disconnect();
   console.log("🧹 Observers cleaned up");
 };
+
+// Minimal nav toggle
+document.addEventListener("DOMContentLoaded", function () {
+  const toggle = document.querySelector(".nav-toggle");
+  const links = document.querySelector(".nav-links");
+
+  if (!toggle || !links) return;
+
+  toggle.addEventListener("click", () => {
+    const open = links.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+
+  // optional: close menu when a link is clicked (mobile)
+  links.addEventListener("click", (e) => {
+    if (e.target.tagName === "A") {
+      links.classList.remove("open");
+      toggle.setAttribute("aria-expanded", "false");
+    }
+  });
+});

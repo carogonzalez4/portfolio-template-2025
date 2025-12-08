@@ -328,9 +328,9 @@
   grid-template-columns: repeat(
     auto-fit,
     minmax(220px, 1fr)
-  ); /* increased min width for wider cards */
+  ); /* wider min width */
   gap: var(--space-md);
-  width: min(90%, 960px); /* limit width so cards remain centered */
+  width: min(90%, 960px); /* keep centered container */
   justify-items: center;
   margin-top: var(--space-md);
 }
@@ -426,6 +426,16 @@
 .skill-card {
   text-align: center;
   margin-inline: auto;
+}
+
+/* Small screens: ensure stack and centered */
+@media (max-width: 480px) {
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+  .skill-card {
+    max-width: 100%;
+  }
 }
 
 /* --------------------------------------------------------------------------

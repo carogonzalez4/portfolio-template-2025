@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./assets/css/index.css" />
     <script src="./assets/js/main.js" defer></script>
-    @import
-    url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-    />
   </head>
   <body>
     <!-- Skip link for accessibility -->
@@ -16,6 +13,13 @@
     <!-- Navigation -->
     <nav class="nav">
       <div class="nav-container">
+        <button
+          class="nav-toggle"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="hamburger" aria-hidden="true"></span>
+        </button>
         <ul class="nav-links">
           <li><a href="#hero">Home</a></li>
           <li><a href="#about">About me</a></li>
