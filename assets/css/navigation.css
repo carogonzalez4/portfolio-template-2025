@@ -34,13 +34,13 @@
 }
 
 .nav-links a {
-  color: var(--color-button-card);
+  color: var(--color-accent);
   transition: color 0.3s;
 }
 
 .nav-links a:hover,
 .nav-links a:focus {
-  color: var(--color-accent); /* Color on hover/focus */
+  color: var(--color-button-card); /* Color on hover/focus */
 }
 
 .nav-links a:active,

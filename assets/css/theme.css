@@ -60,13 +60,13 @@
   --color-button-card: #7096d1; /* Vibrant blue for buttons/cards */
   --color-button-text: #fff9f0; /* Lighter indigo for hover states */
   --color-background: linear-gradient(
-    120deg,
-    #e3f2fd,
-    #dbeefd,
-    #d3eafc,
-    #cbe6fc,
-    #c3e2fb,
-    #bbdefb
+    90deg,
+    #7096d1,
+    #7ca3d6,
+    #8ab0dc,
+    #99bde1,
+    #a9cae6,
+    #bad6eb
   ); /* background */
 
   /*
@@ -81,4 +81,6 @@
        */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1); /* "Power2.out" equivalent */
   --duration-normal: 0.6s; /* Default animation duration */
+
+  --font-sans: "Inter";
 }
