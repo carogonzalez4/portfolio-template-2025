@@ -270,10 +270,10 @@
   font-weight: 600;
   border-radius: 8px;
   transition: background 0.3s, transform 0.3s;
-  background: rgba(112, 150, 209, 0.4);
-  box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: 10px;
 }
 
@@ -363,10 +363,12 @@
   padding: var(--space-md);
   border-radius: 12px;
   text-align: center;
-  background: rgba(112, 150, 209, 0.4);
-  box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5.9px);
+  -webkit-backdrop-filter: blur(5.9px);
+  border-radius: 10px;
+
   border-radius: 10px;
   width: 100%;
   max-width: 360px; /* keep each card from becoming too wide on large screens */
