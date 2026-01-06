@@ -394,4 +394,35 @@ document.addEventListener("DOMContentLoaded", function () {
       toggle.setAttribute("aria-expanded", "false");
     }
   });
+
+  // Scroll-indicator: smooth-scroll to the About section when clicked (and keyboard accessible)
+  const scrollIndicator = document.querySelector(".scroll-indicator");
+  if (scrollIndicator) {
+    // make accessible if not already
+    if (!scrollIndicator.hasAttribute("role"))
+      scrollIndicator.setAttribute("role", "button");
+    if (!scrollIndicator.hasAttribute("tabindex"))
+      scrollIndicator.setAttribute("tabindex", "0");
+
+    const scrollToAbout = () => {
+      const target = document.querySelector("#about");
+      if (!target) return;
+      const nav = document.querySelector(".nav");
+      const navHeight = nav ? nav.offsetHeight : 0;
+      const top =
+        target.getBoundingClientRect().top +
+        window.pageYOffset -
+        navHeight -
+        16; // small gap
+      window.scrollTo({ top, behavior: "smooth" });
+    };
+
+    scrollIndicator.addEventListener("click", scrollToAbout);
+    scrollIndicator.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        scrollToAbout();
+      }
+    });
+  }
 });
