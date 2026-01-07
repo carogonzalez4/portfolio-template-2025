@@ -43,6 +43,11 @@
    But clamp() does this automatically! You just set the boundaries.
    -------------------------------------------------------------------------- */
 
+:root {
+  /* ...existing tokens... */
+  --cursor-trail-size: 12px;
+}
+
 /* --------------------------------------------------------------------------
    2. CSS RESET & BASE STYLES
 
@@ -118,8 +123,23 @@
 .hero-bg {
   position: absolute;
   inset: 0;
-  background: var(--color-background);
   z-index: -1;
+  background: var(--color-background); /* fallback while loading */
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* makes video image cover area */
+  object-position: center;
+  pointer-events: none; /* allow clicks through video */
+}
+
+/* Ensure video element fills and preserves cover */
+.hero-bg[src],
+.hero-bg source,
+.hero-bg video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
 }
 
 /* --------------------------------------------------------------------------
@@ -269,9 +289,9 @@
   color: white;
   font-weight: 600;
   border-radius: 8px;
-  transition: background 0.3s, transform 0.3s;
+  transition: 0.3s, transform 0.3s;
   background: rgba(255, 255, 255, 0.15);
-  box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
+  box-shadow: 20px 20px 40px -6px rgba(40, 71, 132, 0.8);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 10px;
@@ -284,7 +304,7 @@
 }
 
 .hero .btn {
-  color: var(--color-button-text); /* use the token added above */
+  color: var(--color-accent); /* use the token added above */
 }
 
 /* --------------------------------------------------------------------------
@@ -301,55 +321,18 @@
 .about-grid {
   display: grid;
   gap: var(--space-xl);
-
-  /* always stack: about text first, skills below */
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    "about-text"
-    "skills";
-
-  justify-items: center; /* center children horizontally */
-}
-
-.about-text {
-  grid-area: about-text;
-  text-align: center; /* center the paragraphs/headings */
-  max-width: 70ch;
-  margin-inline: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.skills-grid {
-  grid-area: skills;
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(220px, 1fr)
-  ); /* wider min width */
-  gap: var(--space-md);
-  width: min(90%, 960px); /* keep centered container */
-  justify-items: center;
-  margin-top: var(--space-md);
 }
 
 @media (min-width: 768px) {
-  /* Keep about section stacked and centered on all viewports */
   .about-grid {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "about-text"
-      "skills";
-    align-items: center;
-    justify-items: center;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
   }
 }
 
 .about-text p {
   margin-bottom: var(--space-md);
-  color: var(--color-accent);
+  color: var(--color-text-muted);
 }
 
 .skills-grid {
@@ -359,20 +342,38 @@
 }
 
 .skill-card {
-  background: var(--color-button-card);
-  padding: var(--space-md);
-  border-radius: 12px;
-  text-align: center;
+  /* match .btn glass surface */
   background: rgba(255, 255, 255, 0.15);
-  box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(5.9px);
-  -webkit-backdrop-filter: blur(5.9px);
+  box-shadow: 20px 20px 40px -6px rgba(40, 71, 132, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: 10px;
 
-  border-radius: 10px;
-  width: 100%;
-  max-width: 360px; /* keep each card from becoming too wide on large screens */
+  /* spacing / sizing */
+  padding: var(--space-md);
   box-sizing: border-box;
+  width: 100%;
+  max-width: 360px;
+
+  /* keep text readable and smooth transitions */
+  color: inherit;
+  transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* Removed pointer hover visual change — no transform or background swap on hover/focus */
+.skill-card:hover,
+.skill-card:focus {
+  transform: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: inherit;
+  outline: none;
+}
+
+/* keep keyboard-visible focus styling */
+.skill-card:focus-visible {
+  box-shadow: 0 8px 30px rgba(40, 71, 132, 0.6);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .skill-icon {
@@ -404,40 +405,6 @@
 /* Animate skill bars when revealed */
 [data-reveal-stagger].revealed .skill-fill {
   width: var(--fill);
-}
-
-/* ensure titles, text and cards are centered */
-.about .section-title {
-  text-align: center;
-}
-
-.about-text {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.skills-grid {
-  justify-items: center;
-  margin-top: var(--space-md);
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-}
-
-.skill-card {
-  text-align: center;
-  margin-inline: auto;
-}
-
-/* Small screens: ensure stack and centered */
-@media (max-width: 480px) {
-  .skills-grid {
-    grid-template-columns: 1fr;
-  }
-  .skill-card {
-    max-width: 100%;
-  }
 }
 
 /* --------------------------------------------------------------------------
@@ -758,6 +725,10 @@
     width: var(--fill);
     transition: none;
   }
+
+  .cursor-trail {
+    display: none;
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -771,5 +742,33 @@
   .footer .container {
     flex-direction: column;
     gap: var(--space-md);
+  }
+
+  .cursor-trail {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Cursor Trail
+   -------------------------------------------------------------------------- */
+.cursor-trail {
+  position: fixed;
+  width: var(--cursor-trail-size);
+  height: var(--cursor-trail-size);
+  border-radius: 50%;
+  background: var(--color-accent);
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 0.9;
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+  transition: transform 500ms ease, opacity 600ms ease;
+  z-index: 9999;
+}
+
+@media (max-width: 640px), (prefers-reduced-motion: reduce) {
+  .cursor-trail {
+    display: none;
   }
 }

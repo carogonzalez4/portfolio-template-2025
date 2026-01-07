@@ -47,7 +47,26 @@
     <main id="main">
       <!-- Hero Section -->
       <section id="hero" class="hero">
-        <div class="hero-bg parallax-bg"></div>
+        <video
+          class="hero-bg parallax-bg"
+          autoplay
+          muted
+          loop
+          playsinline
+          aria-hidden="true"
+          poster="assets/images/hero-fallback.jpg"
+        >
+          <source
+            src="https://ik.imagekit.io/trtlpmdnft/portfolio%20template/video%20hero?updatedAt=1767765898697"
+            type="video/mp4"
+          />
+          <!-- Fallback image for very old browsers -->
+          <img
+            src="assets/images/hero-fallback.jpg"
+            alt=""
+            aria-hidden="true"
+          />
+        </video>
         <div class="hero-content">
           <h1 class="hero-title animate-on-scroll">Hi, I'm Carolina</h1>
           <p class="hero-subtitle animate-on-scroll">
@@ -69,9 +88,9 @@
           <div class="about-grid">
             <div class="about-text animate-on-scroll">
               <p>
-                I aim to design with purpose, to go beyond aesthetics and create
-                visuals that reveal what often goes unnoticed, communicate ideas
-                clearly, and make a meaningful statement.
+                I'm a passionate front-end developer with 5 years of experience
+                building responsive, accessible, and performant web
+                applications.
               </p>
               <p>
                 My focus is on creating seamless user experiences through clean
@@ -83,28 +102,28 @@
             <div class="skills-grid" data-reveal-stagger>
               <div class="skill-card">
                 <span class="skill-icon">🎨</span>
-                <h3>Photoshop</h3>
+                <h3>CSS/Sass</h3>
                 <div class="skill-bar">
                   <div class="skill-fill" style="--fill: 95%"></div>
                 </div>
               </div>
               <div class="skill-card">
                 <span class="skill-icon">⚡</span>
-                <h3>Illustrator</h3>
+                <h3>JavaScript</h3>
                 <div class="skill-bar">
                   <div class="skill-fill" style="--fill: 90%"></div>
                 </div>
               </div>
               <div class="skill-card">
                 <span class="skill-icon">📱</span>
-                <h3>Indesign</h3>
+                <h3>Responsive</h3>
                 <div class="skill-bar">
                   <div class="skill-fill" style="--fill: 98%"></div>
                 </div>
               </div>
               <div class="skill-card">
                 <span class="skill-icon">♿</span>
-                <h3>Premiere</h3>
+                <h3>A11y</h3>
                 <div class="skill-bar">
                   <div class="skill-fill" style="--fill: 85%"></div>
                 </div>

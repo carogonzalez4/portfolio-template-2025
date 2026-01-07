@@ -350,32 +350,6 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("🚀 Grade 1 Demo: Vanilla scroll animations initialized");
 });
 
-// ==========================================================================
-// 6. CLEANUP (FOR SPA ENVIRONMENTS)
-// ==========================================================================
-
-/**
- * Cleanup function for Single Page Application (SPA) routing.
- *
- * 🎓 WHY IS CLEANUP IMPORTANT?
- * In SPAs (React, Vue, etc.), pages don't fully reload when navigating.
- * If you don't disconnect observers, they keep watching elements that
- * may have been removed, causing memory leaks and bugs.
- *
- * 📐 WHEN TO CALL THIS:
- * - Before navigating away from this page in an SPA
- * - In React: useEffect cleanup function
- * - In Vue: onUnmounted lifecycle hook
- *
- * For traditional multi-page sites, this isn't needed (page reload cleans up).
- */
-window.cleanupScrollObservers = () => {
-  singleObserver.disconnect(); // Stop observing all elements
-  staggerObserver.disconnect();
-  console.log("🧹 Observers cleaned up");
-};
-
-// Minimal nav toggle
 document.addEventListener("DOMContentLoaded", function () {
   const toggle = document.querySelector(".nav-toggle");
   const links = document.querySelector(".nav-links");
@@ -425,4 +399,93 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
+  /* Cursor trail (uses CSS .cursor-trail and --color-accent)
+     - respects prefers-reduced-motion
+     - throttled to avoid creating too many nodes
+  */
+  try {
+    const prefersReduced =
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!prefersReduced && !window.__cursorTrailInit) {
+      window.__cursorTrailInit = true;
+      console.debug("cursor trail: init");
+
+      const THROTTLE_MS = 40;
+      const LIFE_MS = 700;
+      let last = 0;
+
+      const createTrail = (x, y) => {
+        const el = document.createElement("div");
+        el.className = "cursor-trail";
+        el.style.left = x + "px";
+        el.style.top = y + "px";
+        const s = 0.7 + Math.random() * 0.6;
+        el.style.transform = `translate(-50%,-50%) scale(${s})`;
+        document.body.appendChild(el);
+
+        // debug: ensure element created
+        // console.debug("cursor trail: created", el);
+
+        requestAnimationFrame(() => {
+          el.style.transform = `translate(-50%,-50%) scale(${s * 0.18})`;
+          el.style.opacity = "0";
+        });
+
+        setTimeout(() => {
+          if (el && el.parentNode) el.parentNode.removeChild(el);
+        }, LIFE_MS);
+      };
+
+      document.addEventListener("mousemove", (ev) => {
+        const now = performance.now();
+        if (now - last < THROTTLE_MS) return;
+        last = now;
+        createTrail(ev.clientX, ev.clientY);
+      });
+
+      document.addEventListener(
+        "touchmove",
+        (ev) => {
+          const t = ev.touches && ev.touches[0];
+          if (!t) return;
+          const now = performance.now();
+          if (now - last < THROTTLE_MS) return;
+          last = now;
+          createTrail(t.clientX, t.clientY);
+        },
+        { passive: true }
+      );
+    } else {
+      console.debug("cursor trail: skipped (reduced-motion or already init)");
+    }
+  } catch (e) {
+    console.warn("cursor trail init failed", e);
+  }
 });
+
+// ==========================================================================
+// 6. CLEANUP (FOR SPA ENVIRONMENTS)
+// ==========================================================================
+
+/**
+ * Cleanup function for Single Page Application (SPA) routing.
+ *
+ * 🎓 WHY IS CLEANUP IMPORTANT?
+ * In SPAs (React, Vue, etc.), pages don't fully reload when navigating.
+ * If you don't disconnect observers, they keep watching elements that
+ * may have been removed, causing memory leaks and bugs.
+ *
+ * 📐 WHEN TO CALL THIS:
+ * - Before navigating away from this page in an SPA
+ * - In React: useEffect cleanup function
+ * - In Vue: onUnmounted lifecycle hook
+ *
+ * For traditional multi-page sites, this isn't needed (page reload cleans up).
+ */
+window.cleanupScrollObservers = () => {
+  singleObserver.disconnect(); // Stop observing all elements
+  staggerObserver.disconnect();
+  console.log("🧹 Observers cleaned up");
+};
