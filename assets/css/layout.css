@@ -48,6 +48,12 @@
   --cursor-trail-size: 12px;
 }
 
+/* Prevent stray horizontal overflow (hides any floating box off the right edge) */
+html,
+body {
+  overflow-x: hidden;
+}
+
 /* --------------------------------------------------------------------------
    2. CSS RESET & BASE STYLES
 
@@ -98,6 +104,8 @@
 
 .section {
   padding: var(--space-2xl) 0;
+  position: relative;
+  overflow: visible;
 }
 
 .section-title {
@@ -105,6 +113,91 @@
   font-weight: 700;
   margin-bottom: var(--space-xl);
   text-align: center;
+}
+
+/* sun-rays element will be injected inside each .section/.footer .container */
+.section .sun-rays,
+.footer .sun-rays {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  top: -12%;
+  height: 60%;
+  pointer-events: none;
+  z-index: 0; /* behind content (content z-index:1) but above page background */
+  mix-blend-mode: screen;
+  overflow: visible;
+}
+
+/* Individual ray */
+.section .sun-rays .ray,
+.footer .sun-rays .ray {
+  position: absolute;
+  bottom: -10%;
+  height: 220%;
+  left: 50%;
+  transform-origin: bottom center;
+  background: linear-gradient(
+    180deg,
+    var(--color-accent) 0%,
+    rgba(255, 255, 255, 0.04) 50%,
+    transparent 100%
+  );
+  opacity: 0.16; /* increased for visibility */
+  filter: blur(18px);
+  border-radius: 40%;
+  will-change: transform, opacity;
+  pointer-events: none;
+  animation-name: rayFloat;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  z-index: 0;
+  mix-blend-mode: screen; /* keep the intended look */
+}
+
+/* if mix-blend-mode makes rays invisible on some backgrounds, fallback to normal blending */
+.section .sun-rays.fallback-normal .ray,
+.footer .sun-rays.fallback-normal .ray {
+  mix-blend-mode: normal;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.02)
+  );
+  opacity: 0.12;
+}
+
+/* movement keyframes */
+@keyframes rayFloat {
+  0% {
+    transform: translateX(0) rotate(var(--angle, -18deg)) scaleX(1);
+    opacity: var(--start-opacity, 0.06);
+  }
+  50% {
+    transform: translateX(calc(var(--drift, 40px) * 0.5))
+      rotate(calc(var(--angle, -18deg) + 2deg)) scaleX(1.02);
+    opacity: calc(var(--start-opacity, 0.06) + 0.02);
+  }
+  100% {
+    transform: translateX(var(--drift, 40px))
+      rotate(calc(var(--angle, -18deg) + 4deg)) scaleX(1);
+    opacity: var(--end-opacity, 0.04);
+  }
+}
+
+/* make sure section content is above rays */
+.section .container > *,
+.footer .container > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* reduce motion / hide on small screens */
+@media (max-width: 640px), (prefers-reduced-motion: reduce) {
+  .section .sun-rays,
+  .footer .sun-rays {
+    display: none !important;
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -305,6 +398,18 @@
 
 .hero .btn {
   color: var(--color-accent); /* use the token added above */
+  /* only add transitions and micro-interaction — do NOT touch background/color */
+  transition: background-color 220ms var(--ease-out),
+    color 220ms var(--ease-out), transform 200ms var(--ease-out),
+    box-shadow 200ms var(--ease-out);
+  will-change: transform, box-shadow;
+}
+
+/* subtle lift + shadow on hover/focus, without changing background */
+.hero .btn:hover,
+.hero .btn:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 /* --------------------------------------------------------------------------
@@ -507,11 +612,17 @@
 
 .social-links a {
   color: var(--color-accent);
-  transition: color 0.3s;
+  transition: color 0.22s ease;
 }
 
-.social-links a:hover {
+.contact .social-links a:hover,
+.contact .social-links a:focus {
   color: var(--color-button-text);
+}
+
+.contact .social-links a:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(27, 79, 131, 0.14);
 }
 
 /* --------------------------------------------------------------------------
@@ -522,6 +633,8 @@
   text-align: center;
   color: var(--color-accent);
   font-size: var(--text-sm);
+  position: relative;
+  overflow: visible;
 }
 
 .footer .container {
@@ -771,4 +884,70 @@
   .cursor-trail {
     display: none;
   }
+}
+
+/* NAV color rules: ensure only the active link is white */
+.nav-links a {
+  color: var(--color-accent) !important;
+  transition: color 200ms ease;
+  text-decoration: none;
+}
+
+.nav-links a.active,
+.nav-links a[aria-current="page"] {
+  color: var(--color-button-text) !important; /* white for active link */
+}
+
+/* keep keyboard focus visible */
+.nav-links a:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(40, 71, 132, 0.18);
+}
+
+/* --------------------------------------------------------------------------
+   404 page
+   -------------------------------------------------------------------------- */
+
+.error-page {
+  min-height: 70vh;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  padding: 6rem 1.5rem;
+  gap: 0.75rem;
+}
+
+.error-eyebrow {
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.error-title {
+  font-size: clamp(3.5rem, 8vw, 6rem);
+  line-height: 1;
+  margin: 0;
+}
+
+.error-text {
+  max-width: 42ch;
+  margin: 0 auto;
+  opacity: 0.85;
+}
+
+.error-actions {
+  margin-top: 1.5rem;
+  display: inline-flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* If your template doesn't already style focus */
+.nav-link:focus-visible,
+.btn:focus-visible,
+.back-to-top:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
 }

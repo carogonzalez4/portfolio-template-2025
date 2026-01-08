@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./assets/css/index.css" />
+    <title>404 — Page not found</title>
+
+    <!-- Small page-specific styles to keep footer at page bottom and hide nav words -->
+    <style>
+      /* Make layout use full viewport height so footer stays at bottom */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      /* Main stretches to fill available space */
+      main#main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 1.25rem;
+      }
+
+      /* Hide nav link text in the top area (removes visible words) */
+      .nav-link {
+        display: none;
+      }
+
+      /* Footer stays at the end of the page (thanks to body flex layout) */
+      .site-footer {
+        text-align: center;
+        padding: 1.25rem 1rem;
+      }
+
+      /* Tidy error page visuals */
+      .error-eyebrow {
+        text-transform: uppercase;
+        opacity: 0.7;
+        margin: 0 0 0.5rem;
+      }
+      .error-title {
+        font-size: clamp(3rem, 8vw, 6rem);
+        margin: 0;
+      }
+      .error-text {
+        margin: 1rem 0 1.5rem;
+        max-width: 42ch;
+        text-align: center;
+      }
+      .error-actions {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .btn {
+        padding: 0.6rem 1rem;
+        border-radius: 8px;
+        text-decoration: none;
+        display: inline-block;
+      }
+    </style>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <header class="site-header">
+      <nav class="nav" aria-label="Primary">
+        <!-- nav words removed visually; keep links present for screen readers if needed -->
+        <a href="./" class="nav-link" aria-hidden="true">Home</a>
+        <a href="./#about" class="nav-link" aria-hidden="true">About me</a>
+        <a href="./#projects" class="nav-link" aria-hidden="true">Projects</a>
+        <a href="./#contact" class="nav-link" aria-hidden="true">Contact</a>
+      </nav>
+    </header>
+
+    <main id="main" class="error-page">
+      <p class="error-eyebrow">Error</p>
+      <h1 class="error-title">404</h1>
+      <p class="error-text">This page doesn’t exist (or was moved).</p>
+
+      <div class="error-actions">
+        <a class="btn primary" href="./">Back to home</a>
+        <a class="btn secondary" href="./#projects">View projects</a>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p class="footer-text">
+        © 2026 Portfolio Template. Built with vanilla HTML, CSS & JS.
+      </p>
+      <!-- arrow removed as requested -->
+    </footer>
+  </body>
+</html>

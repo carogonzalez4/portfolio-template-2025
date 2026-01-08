@@ -1,99 +1,81 @@
-# Refactoring Plan for Navigation Menu
+# Navigation Menu — Planning Document
 
-## Objective
+## Purpose
 
-Refactor the navigation menu to match the design provided in the screenshot located in the `assets/capturas` folder. The goal is to create a modern, user-friendly, and visually appealing navigation menu that aligns with Awwwards-level design standards.
-
----
-
-## Steps to Refactor the Navigation Menu
-
-### 1. Analyze the Design
-
-- Open the screenshot located in `assets/capturas` to understand the layout, typography, colors, and interactions of the new navigation menu design.
-- Identify the key elements of the design:
-  - Logo placement
-  - Menu items (text, hover effects, active states)
-  - Dropdowns or submenus (if applicable)
-  - Responsiveness (mobile, tablet, desktop views)
-
-### 2. Update the HTML Structure
-
-- Modify the `index.html` file to update the navigation menu structure.
-- Use semantic HTML tags like `<nav>` and `<ul>` for better accessibility and SEO.
-
-### 3. Style the Navigation Menu
-
-- Update the CSS or SCSS files to implement the new design:
-  - Use Flexbox or CSS Grid for layout.
-  - Add hover effects, transitions, and animations as per the design.
-  - Ensure the menu is responsive and adapts to different screen sizes.
-
-### 4. Add Interactivity (if needed)
-
-- Use JavaScript to add interactivity, such as:
-  - Dropdown menus
-  - Hamburger menu for mobile view
-  - Smooth scrolling for anchor links
-
-### 5. Test the Implementation
-
-- Test the navigation menu on multiple devices and browsers to ensure compatibility.
-- Validate the HTML and CSS for errors.
+The purpose of the navigation menu is to help users clearly understand where they are within the page and allow them to move between sections in a simple and intuitive way. Since the portfolio template is based on a single-page structure, the navigation must clearly reflect the currently visible section while remaining accessible and visually consistent.
 
 ---
 
-## Deliverables
+## Design Goals
 
-1. **Updated Navigation Menu**: Fully functional and styled navigation menu implemented in the project.
-2. **Implementation Report**: A detailed report documenting the changes made, challenges faced, and how they were resolved.
-
----
-
-## Prompt to Execute the Plan
-
-1. **Refactor the Navigation Menu**
-
-   - Open the screenshot in `assets/capturas` and analyze the design.
-   - Update the HTML structure in the `index.html` file.
-   - Modify the CSS or SCSS files to style the navigation menu.
-   - Add JavaScript for interactivity (if applicable).
-   - Test the implementation on multiple devices and browsers.
-
-2. **Create an Implementation Report**
-   - Document the following in a Markdown file:
-     - Changes made to the HTML, CSS, and JavaScript files.
-     - Challenges faced during the implementation.
-     - Screenshots of the final navigation menu.
-   - Save the report as `navigation-menu-refactor-report.md` in the `docs/plans` folder.
+- Clearly indicate the **currently active section**
+- Ensure that **only one navigation item** is highlighted at a time
+- Maintain visual consistency with the rest of the template
+- Support **keyboard navigation and screen readers**
+- Avoid visual noise or distracting behavior while scrolling
 
 ---
 
-## Example Report Structure
+## Visual & Interaction Approach
 
-```markdown
-# Navigation Menu Refactor Report
+The navigation is designed to be minimal and unobtrusive, following the editorial aesthetic of the template.
 
-## Overview
+Planned visual behavior:
 
-This report documents the process of refactoring the navigation menu to match the design provided in `assets/capturas`.
+- Non-active links use the accent color defined in the palette
+- The active link is visually distinguished using a contrasting text color
+- No additional icons or decorative elements are introduced
+- Focus states are clearly visible for keyboard users
 
-## Changes Made
+The interaction is intended to feel stable and predictable, avoiding flickering or rapid changes when scrolling.
 
-- Updated the HTML structure in `index.html`.
-- Styled the navigation menu in `styles.css` (or `styles.scss`).
-- Added JavaScript for dropdown functionality.
+---
 
-## Challenges
+## Active Section Logic (Planned)
 
-- [Describe any challenges faced and how they were resolved.]
+To determine the active section, the navigation logic is based on the user’s scroll position rather than multiple overlapping observers.
 
-## Final Result
+Planned approach:
 
-![Screenshot of the new navigation menu](../assets/capturas/final-navigation-menu.png)
+- The vertical center of the viewport is used as a reference point
+- The section that contains this point is considered the active section
+- Navigation links update accordingly to reflect this state
 
-## Testing
+This approach was chosen to ensure consistent behavior across sections of different heights.
 
-- Tested on the following devices and browsers:
-  - [List devices and browsers]
-```
+---
+
+## Accessibility Considerations
+
+Accessibility is a key part of the navigation planning:
+
+- Navigation links use semantic anchor elements
+- The active link includes `aria-current="page"` to support screen readers
+- Keyboard focus states are preserved using `:focus-visible`
+- Navigation remains fully usable without a mouse
+
+---
+
+## Technical Implementation Plan
+
+- Use a single scroll-based update function to manage active states
+- Throttle scroll updates using `requestAnimationFrame` for performance
+- Avoid multiple observers or duplicated initialization logic
+- Keep JavaScript logic simple and readable, aligned with a fundamentals-level project
+
+---
+
+## Testing Strategy
+
+Planned testing includes:
+
+- Scrolling through the page to confirm only one link is active at a time
+- Verifying keyboard navigation using the Tab key
+- Checking focus visibility on all navigation links
+- Confirming correct behavior on different screen sizes
+
+---
+
+## Expected Outcome
+
+The final navigation menu should feel stable, accessible, and visually integrated with the rest of the portfolio template. It should guide users naturally through the page while reinforcing clarity, structure, and usability.

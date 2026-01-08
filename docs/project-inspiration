@@ -2,16 +2,28 @@
 
 ## Trends
 
-- [Trend 1]
-- [Trend 2]
-- [Trend 3]
+- **Minimal & Editorial Web Design**  
+  A design approach that prioritizes typography, spacing, and hierarchy over decorative elements. This trend focuses on clarity, readability, and a timeless aesthetic, making it especially suitable for portfolio websites.
+
+- **Fluid Typography and Responsive Layouts**  
+  The use of fluid typography with `clamp()` and flexible grid systems allows content to adapt smoothly across screen sizes. This trend improves accessibility and ensures a consistent visual experience on different devices.
+
+- **Subtle Motion and Micro-interactions**  
+  Instead of heavy animations, the project incorporates small, intentional interactions such as hover states, smooth scrolling, and gentle transitions. These details enhance usability and add personality without distracting from the content.
+
+---
 
 ## Visual References
 
-- [Link or moodboard image 1]
-- [Link or moodboard image 2]
-- [Link or moodboard image 3]
+- Editorial portfolio websites that rely on clean layouts, generous white space, and strong typographic hierarchy
+- Minimal design templates that use neutral color palettes and structured grids
+- Contemporary creative portfolios that balance simplicity with subtle motion and interaction
+
+_(References are used as conceptual inspiration rather than direct visual imitation.)_
+
+---
 
 ## Theme Draft
 
-[Your project’s core concept—what it’s about]
+The core concept of this project is to create a **neutral yet expressive portfolio template** that highlights structure, clarity, and design fundamentals.  
+Rather than focusing on individual projects or imagery, the template emphasizes layout, typography, and usability as the main design tools. The result is a flexible foundation that can be adapted by different designers while maintaining a professional and editorial visual language.

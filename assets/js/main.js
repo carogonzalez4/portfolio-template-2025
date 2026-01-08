@@ -292,39 +292,54 @@ function initSmoothScroll() {
  * - Only the section crossing this band is considered "active"
  */
 function initActiveNav() {
-  const sections = document.querySelectorAll("section[id]");
-  const navLinks = document.querySelectorAll(".nav-links a");
+  const navLinks = Array.from(document.querySelectorAll(".nav-links a"));
+  const sections = Array.from(document.querySelectorAll("section[id]"));
+  if (!navLinks.length || !sections.length) return;
 
-  const observerOptions = {
-    root: null,
-    rootMargin: "-50% 0px -50% 0px", // Detect section in middle of viewport
-    threshold: 0, // Trigger as soon as ANY part enters
+  // Update active based on the vertical middle of the viewport
+  const updateActive = () => {
+    const middle = window.scrollY + window.innerHeight / 2;
+    // Find the first section that contains the middle point
+    let activeId = sections[0].id || null;
+    for (const s of sections) {
+      const top = s.offsetTop;
+      const bottom = top + s.offsetHeight;
+      if (middle >= top && middle <= bottom) {
+        activeId = s.id;
+        break;
+      }
+    }
+
+    navLinks.forEach((link) => {
+      const isMatch = link.getAttribute("href") === `#${activeId}`;
+      link.classList.toggle("active", isMatch);
+      if (isMatch) link.setAttribute("aria-current", "page");
+      else link.removeAttribute("aria-current");
+    });
   };
 
-  /**
-   * NAV HIGHLIGHT OBSERVER
-   *
-   * When a section enters our detection zone (middle of viewport),
-   * we find the corresponding nav link and highlight it.
-   */
-  const navObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const id = entry.target.getAttribute("id");
+  // Throttle with requestAnimationFrame for performance
+  let ticking = false;
+  const onScroll = () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(() => {
+        updateActive();
+        ticking = false;
+      });
+    }
+  };
 
-        // Update all nav links: highlight matching, reset others
-        navLinks.forEach((link) => {
-          link.style.color =
-            link.getAttribute("href") === `#${id}`
-              ? "var(--color-accent)" // Highlighted color
-              : ""; // Reset to default (inherits from CSS)
-        });
-      }
-    });
-  }, observerOptions);
+  // Init and attach
+  updateActive();
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
 
-  // Observe all sections with IDs
-  sections.forEach((section) => navObserver.observe(section));
+  // expose cleanup handle so window.cleanupScrollObservers can remove if needed
+  window._navActiveCleanup = () => {
+    window.removeEventListener("scroll", onScroll);
+    window.removeEventListener("resize", onScroll);
+  };
 }
 
 // ==========================================================================
@@ -463,7 +478,138 @@ document.addEventListener("DOMContentLoaded", function () {
   } catch (e) {
     console.warn("cursor trail init failed", e);
   }
+
+  // NAV: highlight the single most-visible section in the viewport
+  // Duplicate initActiveNav removed here. The single top-level initActiveNav()
+  // (defined earlier) will handle active-link highlighting to avoid multiple
+  // observers toggling classes at once.
 });
+
+/* --------------------------------------------------------------------------
+   Sun rays: reliable, self-contained module (injects .sun-rays into every
+   .section and .footer except #hero). Adds debug logs and a test helper.
+   -------------------------------------------------------------------------- */
+(function initSunRaysModule() {
+  if (window.__sunRaysInit) {
+    console.debug("sun-rays: already init");
+    return;
+  }
+  window.__sunRaysInit = true;
+  console.debug("sun-rays: module init");
+
+  const prefersReduced =
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (prefersReduced) {
+    console.debug("sun-rays: reduced-motion enabled — skipping");
+    return;
+  }
+
+  function createRaysIn(container, count = 7) {
+    if (!container) return console.debug("sun-rays: no container");
+    if (container.dataset.inited)
+      return console.debug("sun-rays: container already inited");
+    container.dataset.inited = "1";
+    console.debug("sun-rays: creating", count, "rays in", container);
+
+    for (let i = 0; i < count; i++) {
+      const ray = document.createElement("div");
+      ray.className = "ray";
+
+      const left = 5 + Math.random() * 90; // %
+      const scaleW = 0.7 + Math.random() * 1.0;
+      const angle = -30 + Math.random() * 60; // deg
+      const drift = (20 + Math.random() * 120) * (Math.random() < 0.5 ? -1 : 1); // px
+      const duration = 12 + Math.random() * 28; // s
+      const startOpacity = 0.04 + Math.random() * 0.08;
+      const endOpacity = Math.max(
+        0.01,
+        startOpacity - (0.01 + Math.random() * 0.03)
+      );
+
+      ray.style.left = `${left}%`;
+      ray.style.width = `${36 * scaleW}%`;
+      ray.style.setProperty("--angle", `${angle}deg`);
+      ray.style.setProperty("--drift", `${drift}px`);
+      ray.style.setProperty("--start-opacity", `${startOpacity}`);
+      ray.style.setProperty("--end-opacity", `${endOpacity}`);
+      ray.style.animationDuration = `${duration}s`;
+      ray.style.opacity = `${startOpacity}`;
+
+      container.appendChild(ray);
+    }
+  }
+
+  function ensureWrapperFor(sectionEl) {
+    const container = sectionEl.querySelector(".container") || sectionEl;
+    let wrapper = container.querySelector(".sun-rays");
+    if (!wrapper) {
+      wrapper = document.createElement("div");
+      wrapper.className = "sun-rays";
+      wrapper.setAttribute("aria-hidden", "true");
+      container.insertBefore(wrapper, container.firstChild);
+    }
+    return wrapper;
+  }
+
+  function observeSectionsForRays() {
+    const targets = Array.from(document.querySelectorAll(".section, .footer"));
+    if (!targets.length) {
+      console.debug("sun-rays: no .section/.footer found");
+      return;
+    }
+    console.debug("sun-rays: observing", targets.length, "targets");
+
+    const obs = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const section = entry.target;
+          if (section.id === "hero") {
+            observer.unobserve(section);
+            return;
+          }
+          const wrapper = ensureWrapperFor(section);
+          createRaysIn(wrapper, 7);
+          observer.unobserve(section);
+        });
+      },
+      { root: null, threshold: 0.06 }
+    );
+
+    targets.forEach((t) => {
+      if (t.id === "hero") return;
+      obs.observe(t);
+    });
+
+    // FALLBACK: create rays immediately for sections currently visible (helps debug)
+    targets.forEach((t) => {
+      if (t.id === "hero") return;
+      const rect = t.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        const w = ensureWrapperFor(t);
+        createRaysIn(w, 7);
+      }
+    });
+  }
+
+  // Start after DOM ready (safe even if script loaded earlier)
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", observeSectionsForRays);
+  } else {
+    observeSectionsForRays();
+  }
+
+  // Expose quick test helper for Console
+  window._createSunRaysTest = (selector = "#about", count = 7) => {
+    const el = document.querySelector(selector);
+    if (!el)
+      return console.debug("sun-rays test: selector not found", selector);
+    const wrapper = ensureWrapperFor(el);
+    createRaysIn(wrapper, count);
+    console.debug("sun-rays test: created", count, "rays in", selector);
+  };
+})();
 
 // ==========================================================================
 // 6. CLEANUP (FOR SPA ENVIRONMENTS)
@@ -485,7 +631,12 @@ document.addEventListener("DOMContentLoaded", function () {
  * For traditional multi-page sites, this isn't needed (page reload cleans up).
  */
 window.cleanupScrollObservers = () => {
-  singleObserver.disconnect(); // Stop observing all elements
-  staggerObserver.disconnect();
+  try {
+    singleObserver.disconnect();
+  } catch {}
+  try {
+    staggerObserver.disconnect();
+  } catch {}
+  if (window._navActiveCleanup) window._navActiveCleanup();
   console.log("🧹 Observers cleaned up");
 };
